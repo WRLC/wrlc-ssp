@@ -50,7 +50,7 @@
     - gallaudet
     - howard
     - incommon
-#    - udc
+    - udc
     - wrlc
 
 - name: transfer idp config
