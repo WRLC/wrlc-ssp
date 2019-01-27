@@ -1,0 +1,73 @@
+---
+
+- name: Download simpleSAMLphp
+  get_url:
+    url: "https://github.com/simplesamlphp/simplesamlphp/releases/download/v{{ target_upgrade_version }}/simplesamlphp-{{ target_upgrade_version }}.tar.gz"
+    dest: "{{ download_dir }}/simplesamlphp-{{ target_upgrade_version }}.tar.gz"
+    validate_certs: False
+
+- name: Extract simpleSAMLphp
+  unarchive:
+    src: "{{ download_dir }}/simplesamlphp-{{ target_upgrade_version }}.tar.gz"
+    dest: "{{ install_location }}"
+    copy: no
+    owner: www-data
+    group: www-data
+    mode: g+w
+
+- name: move config directory to config.dist
+  command: mv {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/config {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/config.dist
+
+- name: link wrlc config
+  file:
+    src: "{{ install_location }}/Aladin-SP/simplesamlphp_config"
+    dest: "{{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/config"
+    state: link
+
+- name: Copy certs directory to new location
+  command: cp -r {{ install_location }}/simplesamlphp/cert/ {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/
+
+- name: Link wrlc auth endpoint
+  file: 
+    src: "{{ install_location }}/Aladin-SP/auth"
+    dest: "{{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/www/wrlcauth"
+    state: link
+
+- name: enable cron
+  file:
+    path: "{{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/modules/cron/enable"
+    state: touch
+
+- name: enable metafresh
+  file:
+    path: "{{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/modules/metarefresh/enable"
+    state: touch
+
+- name: transfer metafresh metadata from old sp install
+  command: cp -a {{ install_location }}/simplesamlphp/metadata/metarefresh-{{ item }} {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/metadata/metarefresh-{{ item }}
+  with_items:
+    - catholic
+    - gallaudet
+    - howard
+    - incommon
+#    - udc
+    - wrlc
+
+- name: transfer idp config
+  command: cp {{ install_location }}/simplesamlphp/metadata/saml20-idp-remote.php {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/metadata/saml20-idp-remote.php
+
+- name: transfer idp logs
+  command: cp -a {{ install_location }}/simplesamlphp/log {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/
+
+- name: unlink old install
+  command: unlink {{ install_location }}/simplesamlphp
+
+- name: link new install
+  file:
+    src: "{{ install_location }}/simplesamlphp-{{ target_upgrade_version }}"
+    dest: "{{ install_location }}/simplesamlphp"
+    state: link
+
+- name: restart apache
+  service: name=apache2 state=restarted
+
