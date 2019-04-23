@@ -1,4 +1,4 @@
-wrlc-mariadb
+wrlc-ssp
 =========
 
 Updates SimpleSAMLphp
