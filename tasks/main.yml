@@ -46,6 +46,7 @@
 - name: transfer metafresh metadata from old sp install
   command: cp -a {{ install_location }}/simplesamlphp/metadata/metarefresh-{{ item }} {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/metadata/metarefresh-{{ item }}
   with_items:
+    - au-adfs
     - catholic
     - gallaudet
     - howard
