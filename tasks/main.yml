@@ -37,7 +37,10 @@
     state: link
 
 - name: Copy certs directory to new location
-  command: cp -r {{ install_location }}/simplesamlphp/cert/* {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/cert/
+  command: cp -a {{ install_location }}/simplesamlphp/cert/{{ item }} {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/cert/{{ item }}
+  with_items:
+    - saml.crt
+    - saml.pem
 
 - name: Link wrlc auth endpoint
   file: 
