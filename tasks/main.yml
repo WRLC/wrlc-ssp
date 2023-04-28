@@ -16,7 +16,7 @@
     mode: g+w
 
 - name: Transfer modules
-  command: cp -nr {{ install_location }}/simplesamlphp/modules/{{ item }} {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/{{ item }}
+  command: cp -ar {{ install_location }}/simplesamlphp/modules/{{ item }} {{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/{{ item }}
   with_items:
     - adfs
     - authorize
