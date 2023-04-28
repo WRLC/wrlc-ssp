@@ -1,6 +1,6 @@
 ---
 # vars file for wrlc-ssp
 # target_hosts: <specify on command line --extra-vars>
-target_upgrade_version: 1.17.2
+target_upgrade_version: 2.0.3
 install_location: "/usr/local/webapps"
 download_dir: "/tmp"

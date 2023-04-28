@@ -45,7 +45,7 @@
 - name: Link wrlc auth endpoint
   file: 
     src: "{{ install_location }}/Aladin-SP/auth"
-    dest: "{{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/www/wrlcauth"
+    dest: "{{ install_location }}/simplesamlphp-{{ target_upgrade_version }}/public/wrlcauth"
     state: link
 
 - name: transfer metafresh metadata from old sp install
