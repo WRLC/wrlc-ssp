@@ -2,7 +2,7 @@
 
 - name: Download simpleSAMLphp
   get_url:
-    url: "https://github.com/simplesamlphp/simplesamlphp/releases/download/v{{ target_upgrade_version }}/simplesamlphp-{{ target_upgrade_version }}.tar.gz"
+    url: "https://github.com/simplesamlphp/simplesamlphp/releases/download/v{{ target_upgrade_version }}/simplesamlphp-{{ target_upgrade_version }}-slim.tar.gz"
     dest: "{{ download_dir }}/simplesamlphp-{{ target_upgrade_version }}.tar.gz"
     validate_certs: False
 
